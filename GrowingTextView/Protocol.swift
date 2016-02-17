@@ -19,8 +19,8 @@ public protocol GrowingTextViewDelegate {
     func growingTextViewDidChange(growingTextView: GrowingTextView)
     func growingTextViewDidChangeSelection(growingTextView: GrowingTextView)
 
-    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat)
-    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat)
+    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat)
+    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat)
 
     func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool
 }
@@ -54,11 +54,11 @@ public extension GrowingTextViewDelegate {
 
     }
 
-    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat) {
+    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat) {
 
     }
 
-    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat) {
+    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {
 
     }
 

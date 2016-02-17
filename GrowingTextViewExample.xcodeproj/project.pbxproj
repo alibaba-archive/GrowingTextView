@@ -13,6 +13,9 @@
 		D3913F151C72EBAA00AB3B29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3913F141C72EBAA00AB3B29 /* Assets.xcassets */; };
 		D3913F3A1C72EEA000AB3B29 /* GrowingTextView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3913F391C72EEA000AB3B29 /* GrowingTextView.framework */; };
 		D3913F3B1C72EEA000AB3B29 /* GrowingTextView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3913F391C72EEA000AB3B29 /* GrowingTextView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D3DA9AD81C744A2400D7B4F8 /* LeftMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DA9AD71C744A2400D7B4F8 /* LeftMessageCell.swift */; };
+		D3DA9ADA1C744A3600D7B4F8 /* RightMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DA9AD91C744A3600D7B4F8 /* RightMessageCell.swift */; };
+		D3DA9ADC1C74957800D7B4F8 /* MessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DA9ADB1C74957800D7B4F8 /* MessageLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +40,9 @@
 		D3913F141C72EBAA00AB3B29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3913F191C72EBAA00AB3B29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3913F391C72EEA000AB3B29 /* GrowingTextView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = GrowingTextView.framework; path = "/Users/hongxin/Library/Developer/Xcode/DerivedData/GrowingTextView-crgyyrnlpfkercemdxohtbbudazx/Build/Products/Debug-iphoneos/GrowingTextView.framework"; sourceTree = "<absolute>"; };
+		D3DA9AD71C744A2400D7B4F8 /* LeftMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMessageCell.swift; sourceTree = "<group>"; };
+		D3DA9AD91C744A3600D7B4F8 /* RightMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightMessageCell.swift; sourceTree = "<group>"; };
+		D3DA9ADB1C74957800D7B4F8 /* MessageLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				D3913F0D1C72EBAA00AB3B29 /* AppDelegate.swift */,
+				D3DA9ADB1C74957800D7B4F8 /* MessageLabel.swift */,
+				D3DA9AD71C744A2400D7B4F8 /* LeftMessageCell.swift */,
+				D3DA9AD91C744A3600D7B4F8 /* RightMessageCell.swift */,
 				D3913F0F1C72EBAA00AB3B29 /* ExampleViewController.swift */,
 				D3913F111C72EBAA00AB3B29 /* Main.storyboard */,
 				D3913F141C72EBAA00AB3B29 /* Assets.xcassets */,
@@ -151,8 +160,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3DA9ADA1C744A3600D7B4F8 /* RightMessageCell.swift in Sources */,
 				D3913F101C72EBAA00AB3B29 /* ExampleViewController.swift in Sources */,
+				D3DA9ADC1C74957800D7B4F8 /* MessageLabel.swift in Sources */,
 				D3913F0E1C72EBAA00AB3B29 /* AppDelegate.swift in Sources */,
+				D3DA9AD81C744A2400D7B4F8 /* LeftMessageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

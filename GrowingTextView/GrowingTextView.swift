@@ -9,6 +9,7 @@
 import UIKit
 
 public class GrowingTextView: UIView {
+    // MARK: - Public properties
     public var delegate: GrowingTextViewDelegate?
 
     public var maxNumberOfLines: Int?
@@ -17,89 +18,130 @@ public class GrowingTextView: UIView {
     public var minHeight: CGFloat = 0
     public var growingAnimationEnabled = true
     public var animationDuration: NSTimeInterval = 0.1
+    public var contentInset = UIEdgeInsetsZero {
+        didSet {
+            updateTextViewFrame()
+        }
+    }
     public var placeholderEnabled = true {
         didSet {
             textView.shouldDisplayPlaceholder = textView.text.characters.count == 0 && placeholderEnabled
         }
     }
     public var placeholder: NSAttributedString? {
-        didSet {
-            textView.placeholder = placeholder
+        set {
+            textView.placeholder = newValue
         }
-    }
-    public var contentInset = UIEdgeInsetsZero {
-        didSet {
-            updateTextViewFrame()
+        get {
+            return textView.placeholder
         }
     }
 
+    // MARK: - UITextView properties
     public var text: String? {
-        didSet {
-            textView.text = text
+        set {
+            textView.text = newValue
+        }
+        get {
+            return textView.text
         }
     }
     public var font: UIFont? {
-        didSet {
-            textView.font = font
+        set {
+            textView.font = newValue
+        }
+        get {
+            return textView.font
         }
     }
     public var textColor: UIColor? {
-        didSet {
-            textView.textColor = textColor
+        set {
+            textView.textColor = newValue
+        }
+        get {
+            return textView.textColor
         }
     }
-    public var textAlignment: NSTextAlignment = .Left {
-        didSet {
-            textView.textAlignment = textAlignment
+    public var textAlignment: NSTextAlignment {
+        set {
+            textView.textAlignment = newValue
+        }
+        get {
+            return textView.textAlignment
         }
     }
-    public var editable = true {
-        didSet {
-            textView.editable = editable
+    public var editable: Bool {
+        set {
+            textView.editable = newValue
+        }
+        get {
+            return textView.editable
         }
     }
     public var selectedRange: NSRange? {
-        didSet {
-            if let selectedRange = selectedRange {
-                textView.selectedRange = selectedRange
+        set {
+            if let newValue = newValue {
+                textView.selectedRange = newValue
             }
         }
-    }
-    public var dataDetectorTypes: UIDataDetectorTypes = .None {
-        didSet {
-            textView.dataDetectorTypes = dataDetectorTypes
+        get {
+            return textView.selectedRange
         }
     }
-    public var scrollEnabled = true {
-        didSet {
-            textView.scrollEnabled = scrollEnabled
+    public var dataDetectorTypes: UIDataDetectorTypes {
+        set {
+            textView.dataDetectorTypes = newValue
+        }
+        get {
+            return textView.dataDetectorTypes
         }
     }
-    public var returnKeyType: UIReturnKeyType = .Default {
-        didSet {
-            textView.returnKeyType = returnKeyType
+    public var scrollEnabled: Bool {
+        set {
+            textView.scrollEnabled = newValue
+        }
+        get {
+            return textView.scrollEnabled
         }
     }
-    public var keyboardType: UIKeyboardType = .Default {
-        didSet {
-            textView.keyboardType = keyboardType
+    public var returnKeyType: UIReturnKeyType {
+        set {
+            textView.returnKeyType = newValue
+        }
+        get {
+            return textView.returnKeyType
         }
     }
-    public var enablesReturnKeyAutomatically = false {
-        didSet {
-            textView.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+    public var keyboardType: UIKeyboardType {
+        set {
+            textView.keyboardType = newValue
         }
+        get {
+            return textView.keyboardType
+        }
+    }
+    public var enablesReturnKeyAutomatically: Bool {
+        set {
+            textView.enablesReturnKeyAutomatically = newValue
+        }
+        get {
+            return textView.enablesReturnKeyAutomatically
+        }
+    }
+    public var hasText: Bool {
+        return textView.hasText()
     }
 
-    private lazy var textView: GrowingInternalTextView = { [unowned self] in
+    // MARK: - Private properties
+    private var textView: GrowingInternalTextView = {
         let textView = GrowingInternalTextView(frame: CGRect.zero)
-        textView.scrollEnabled = self.scrollEnabled
         textView.showsHorizontalScrollIndicator = false
         textView.contentInset = UIEdgeInsetsZero
         textView.contentMode = .Redraw
         return textView
     }()
 
+    // MARK: - Initialization
     public override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -115,7 +157,7 @@ public class GrowingTextView: UIView {
 extension GrowingTextView {
     public override var backgroundColor: UIColor? {
         didSet {
-            textView.backgroundColor = backgroundColor
+//            textView.backgroundColor = backgroundColor
         }
     }
 
@@ -152,10 +194,6 @@ extension GrowingTextView {
 
 // MARK: - Public
 extension GrowingTextView {
-    public func hasText() -> Bool {
-        return textView.hasText()
-    }
-
     public func scrollRangeToVisible(range: NSRange) {
         textView.scrollRangeToVisible(range)
     }
@@ -166,14 +204,15 @@ extension GrowingTextView {
 
     public func updateHeight() {
         var newHeight = calculateHeight()
-        if newHeight < minHeight || !textView.hasText() {
+        if newHeight < minHeight || !hasText {
             newHeight = minHeight
         }
         if let maxHeight = maxHeight where newHeight > maxHeight {
             newHeight = maxHeight
         }
 
-        if newHeight != textView.frame.height {
+        let difference = newHeight - frame.height
+        if difference != 0 {
             if newHeight == maxHeight {
                 if !textView.scrollEnabled {
                     textView.scrollEnabled = true
@@ -185,13 +224,13 @@ extension GrowingTextView {
 
             if growingAnimationEnabled {
                 UIView.animateWithDuration(animationDuration, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
-                    self.updateGrowingTextView(newHeight)
+                    self.updateGrowingTextView(newHeight: newHeight, difference: difference)
                     }, completion: { (finished) -> Void in
-                        self.delegate?.growingTextView(self, didChangeHeight: newHeight)
+                        self.delegate?.growingTextView(self, didChangeHeight: newHeight, difference: difference)
                 })
             } else {
-                updateGrowingTextView(newHeight)
-                self.delegate?.growingTextView(self, didChangeHeight: newHeight)
+                updateGrowingTextView(newHeight: newHeight, difference: difference)
+                delegate?.growingTextView(self, didChangeHeight: newHeight, difference: difference)
             }
         }
 
@@ -204,6 +243,8 @@ extension GrowingTextView {
     private func commonInit() {
         textView.frame = CGRect(origin: CGPoint.zero, size: frame.size)
         textView.delegate = self
+        textView.backgroundColor = UIColor.greenColor()
+        backgroundColor = UIColor.redColor()
         addSubview(textView)
     }
 
@@ -216,8 +257,8 @@ extension GrowingTextView {
         textView.frame = textViewFrame
     }
 
-    private func updateGrowingTextView(newHeight: CGFloat) {
-        delegate?.growingTextView(self, willChangeHeight: newHeight)
+    private func updateGrowingTextView(newHeight newHeight: CGFloat, difference: CGFloat) {
+        delegate?.growingTextView(self, willChangeHeight: newHeight, difference: difference)
         frame.size.height = newHeight
         updateTextViewFrame()
     }
@@ -242,14 +283,19 @@ extension GrowingTextView: UITextViewDelegate {
     }
 
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if !textView.hasText() && text.isEmpty {
+        if !hasText && text.isEmpty {
             return false
         }
         if let delegate = delegate {
-            return delegate.growingTextView(self, shouldChangeTextInRange: range, replacementText: text)
+            delegate.growingTextView(self, shouldChangeTextInRange: range, replacementText: text)
         }
         if text == "\n" {
-            
+            if let shouldReturn = delegate?.growingTextViewShouldReturn(self) {
+                return shouldReturn
+            } else {
+                textView.resignFirstResponder()
+                return false
+            }
         }
         return true
     }
