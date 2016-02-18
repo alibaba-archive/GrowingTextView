@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GA3-vu-uU9">
-                                <rect key="frame" x="0.0" y="560" width="600" height="40"/>
+                                <rect key="frame" x="0.0" y="563" width="600" height="37"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAd-bb-T4Z">
-                                        <rect key="frame" x="8" y="8" width="24" height="24"/>
+                                        <rect key="frame" x="8" y="7" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="NOf-9y-PZ1"/>
                                             <constraint firstAttribute="width" constant="24" id="kka-WK-H7O"/>
@@ -29,11 +29,11 @@
                                         <state key="normal" image="voiceIcon"/>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WRR-ag-Wkf" customClass="GrowingTextView" customModule="GrowingTextView">
-                                        <rect key="frame" x="40" y="0.0" width="488" height="40"/>
+                                        <rect key="frame" x="40" y="1" width="488" height="36"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0rc-wT-8JX">
-                                        <rect key="frame" x="568" y="8" width="24" height="24"/>
+                                        <rect key="frame" x="568" y="7" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="5pP-1R-iHf"/>
                                             <constraint firstAttribute="height" constant="24" id="sOP-L7-TnF"/>
@@ -41,31 +41,41 @@
                                         <state key="normal" image="attachmentsIcon"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ka-Qi-F36">
-                                        <rect key="frame" x="536" y="8" width="24" height="24"/>
+                                        <rect key="frame" x="536" y="7" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="sP0-Og-QsP"/>
                                             <constraint firstAttribute="width" constant="24" id="xdI-HI-40I"/>
                                         </constraints>
                                         <state key="normal" image="emojiIcon"/>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yql-5e-KKi">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.15120789007092197" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="bok-Md-4Bf"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="0rc-wT-8JX" secondAttribute="bottom" constant="8" id="HAT-DX-y9y"/>
-                                    <constraint firstAttribute="height" constant="40" id="TGm-sU-yr0"/>
+                                    <constraint firstItem="Yql-5e-KKi" firstAttribute="top" secondItem="GA3-vu-uU9" secondAttribute="top" id="AW4-NY-oVx"/>
+                                    <constraint firstAttribute="bottom" secondItem="0rc-wT-8JX" secondAttribute="bottom" constant="6" id="HAT-DX-y9y"/>
+                                    <constraint firstAttribute="height" constant="37" id="TGm-sU-yr0"/>
                                     <constraint firstAttribute="bottom" secondItem="WRR-ag-Wkf" secondAttribute="bottom" id="VBh-eX-6a1"/>
+                                    <constraint firstItem="Yql-5e-KKi" firstAttribute="leading" secondItem="GA3-vu-uU9" secondAttribute="leading" id="a1a-xS-DyT"/>
                                     <constraint firstItem="pAd-bb-T4Z" firstAttribute="leading" secondItem="GA3-vu-uU9" secondAttribute="leading" constant="8" id="el2-hC-ZYA"/>
                                     <constraint firstItem="WRR-ag-Wkf" firstAttribute="leading" secondItem="pAd-bb-T4Z" secondAttribute="trailing" constant="8" id="lO6-gt-bNt"/>
                                     <constraint firstItem="5Ka-Qi-F36" firstAttribute="leading" secondItem="WRR-ag-Wkf" secondAttribute="trailing" constant="8" id="m0P-HP-ohn"/>
-                                    <constraint firstAttribute="bottom" secondItem="5Ka-Qi-F36" secondAttribute="bottom" constant="8" id="o8P-L6-A3g"/>
+                                    <constraint firstAttribute="bottom" secondItem="5Ka-Qi-F36" secondAttribute="bottom" constant="6" id="o8P-L6-A3g"/>
                                     <constraint firstAttribute="trailing" secondItem="0rc-wT-8JX" secondAttribute="trailing" constant="8" id="okd-e7-rnB"/>
-                                    <constraint firstAttribute="bottom" secondItem="pAd-bb-T4Z" secondAttribute="bottom" constant="8" id="qCh-3T-Fd1"/>
+                                    <constraint firstAttribute="bottom" secondItem="pAd-bb-T4Z" secondAttribute="bottom" constant="6" id="qCh-3T-Fd1"/>
                                     <constraint firstItem="0rc-wT-8JX" firstAttribute="leading" secondItem="5Ka-Qi-F36" secondAttribute="trailing" constant="8" id="rd3-7y-qGN"/>
-                                    <constraint firstItem="WRR-ag-Wkf" firstAttribute="top" secondItem="GA3-vu-uU9" secondAttribute="top" id="vUh-D0-qCb"/>
+                                    <constraint firstItem="WRR-ag-Wkf" firstAttribute="top" secondItem="GA3-vu-uU9" secondAttribute="top" constant="1" id="vUh-D0-qCb"/>
+                                    <constraint firstAttribute="trailing" secondItem="Yql-5e-KKi" secondAttribute="trailing" id="xs4-FD-Aq1"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="dsd-tj-G9N">
-                                <rect key="frame" x="0.0" y="64" width="600" height="496"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="499"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>

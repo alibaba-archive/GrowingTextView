@@ -28,7 +28,7 @@ class ExampleViewController: UIViewController {
 
     private func setupUI() {
         configureGrowingTextView()
-        navigationItem.title = "GrowingTextView Example"
+        navigationItem.title = "GrowingTextView"
         automaticallyAdjustsScrollViewInsets = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
@@ -38,22 +38,23 @@ class ExampleViewController: UIViewController {
         textView.returnKeyType = .Send
         textView.enablesReturnKeyAutomatically = true
         textView.font = UIFont.systemFontOfSize(16)
+        textView.placeholder = NSAttributedString(string: "说点什么...", attributes: [NSForegroundColorAttributeName: UIColor.lightGrayColor(), NSFontAttributeName: UIFont.systemFontOfSize(16)])
         textView.delegate = self
     }
 
-    private func scrollToBottom() {
+    private func scrollToBottom(animated animated: Bool) {
         guard messages.count > 0 else {
             return
         }
-        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: messages.count - 1), atScrollPosition: .Bottom, animated: true)
+        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: messages.count - 1), atScrollPosition: .Bottom, animated: animated)
     }
-    
+
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
             inputBarBottomSpace.constant = keyboardFrame.height
             view.setNeedsLayout()
             view.layoutIfNeeded()
-            scrollToBottom()
+            scrollToBottom(animated: false)
         }
     }
 
@@ -67,9 +68,13 @@ class ExampleViewController: UIViewController {
 extension ExampleViewController: GrowingTextViewDelegate {
     func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {
         print("Height Changed: \(height)  Diff: \(difference)")
+
         inputBarHeight.constant = height
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
+        UIView.animateWithDuration(0.1, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            }) { (finished) -> Void in
+                self.scrollToBottom(animated: true)
+        }
     }
 
     func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool {
@@ -77,12 +82,12 @@ extension ExampleViewController: GrowingTextViewDelegate {
             return false
         }
         messages.append(text)
-        growingTextView.text = " "
+        growingTextView.text = nil
         tableView.beginUpdates()
         tableView.insertSections(NSIndexSet(index: messages.count - 1), withRowAnimation: .Fade)
         tableView.endUpdates()
-        scrollToBottom()
-        return true
+        scrollToBottom(animated: true)
+        return false
     }
 }
 
@@ -93,6 +98,10 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
 
     private func isRightMessageCellWithIndexPath(indexPath: NSIndexPath) -> Bool {
         return indexPath.section % 2 == 1
+    }
+
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        textView.resignFirstResponder()
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -138,6 +147,11 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
             cell.layoutIfNeeded()
             return cell
         }
+    }
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        tableView.reloadData()
     }
 }
 
