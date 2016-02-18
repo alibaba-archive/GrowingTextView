@@ -42,7 +42,7 @@ internal class GrowingInternalTextView: UITextView {
         }
         let placeholderSize = sizeForAttributedString(placeholder)
         let xPosition: CGFloat = textContainer.lineFragmentPadding + textContainerInset.left
-        let yPosition: CGFloat = (bounds.height - placeholderSize.height) / 2
+        let yPosition: CGFloat = (bounds.height - placeholderSize.height) / 2 + (textContainerInset.top - textContainerInset.bottom) / 2
         let rect = CGRect(origin: CGPoint(x: xPosition, y: yPosition), size: placeholderSize)
         placeholder.drawInRect(rect)
     }

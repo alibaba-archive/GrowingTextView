@@ -48,10 +48,20 @@ public class GrowingTextView: UIView {
     ///
     /// The default value of this property is true.
     public var growingAnimationEnabled = true
-    /// The time duration of textView's growing animation.
+    /// The time duration of text view's growing animation.
     ///
     /// The default value of this property is 0.1.
     public var animationDuration: NSTimeInterval = 0.1
+    /// The inset of the text view.
+    ///
+    /// The default value of this property is (top: 8, left: 5, bottom: 8, right: 5).
+    public var contentInset = UIEdgeInsetsMake(8, 5, 8, 5) {
+        didSet {
+            updateTextViewFrame()
+            updateMaxHeight()
+            updateMinHeight()
+        }
+    }
     /// A Boolean value that determines whether to display a placeholder when the text is empty.
     ///
     /// The default value of this property is true.
@@ -114,32 +124,6 @@ public class GrowingTextView: UIView {
         }
         get {
             return textView.textAlignment
-        }
-    }
-    /// The inset of the text container's layout area within the text view's content area.
-    ///
-    /// This property provides text margins for text laid out in the text view. The default value of this property is UIEdgeInsetsMake(8, 0, 8, 0).
-    public var textContainerInset: UIEdgeInsets {
-        set {
-            textView.textContainerInset = newValue
-            updateMaxHeight()
-            updateMinHeight()
-        }
-        get {
-            return textView.textContainerInset
-        }
-    }
-    /// The padding appears at the beginning and end of the line fragment rectangles.
-    ///
-    /// This value is utilized by the layout manager for determining the layout width. The default value of this property is 5.0.
-    public var textContainerLineFragmentPadding: CGFloat {
-        set {
-            textView.textContainer.lineFragmentPadding = newValue
-            updateMaxHeight()
-            updateMinHeight()
-        }
-        get {
-            return textView.textContainer.lineFragmentPadding
         }
     }
     /// A Boolean value indicating whether the receiver is editable.
@@ -227,6 +211,8 @@ public class GrowingTextView: UIView {
     // MARK: - Private properties
     private var textView: GrowingInternalTextView = {
         let textView = GrowingInternalTextView(frame: CGRect.zero)
+        textView.textContainerInset = UIEdgeInsetsZero
+        textView.textContainer.lineFragmentPadding = 1 // 1 pixel for caret
         textView.showsHorizontalScrollIndicator = false
         textView.contentInset = UIEdgeInsetsZero
         textView.contentMode = .Redraw
@@ -255,7 +241,7 @@ extension GrowingTextView {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        textView.frame.size = frame.size
+        updateTextViewFrame()
     }
 
     public override func sizeThatFits(var size: CGSize) -> CGSize {
@@ -291,7 +277,7 @@ extension GrowingTextView {
     }
 
     public func calculateHeight() -> CGFloat {
-        return ceil(textView.sizeThatFits(textView.frame.size).height)
+        return ceil(textView.sizeThatFits(textView.frame.size).height + contentInset.top + contentInset.bottom)
     }
 
     public func updateHeight() {
@@ -316,13 +302,18 @@ extension GrowingTextView {
 
             if growingAnimationEnabled {
                 UIView.animateWithDuration(animationDuration, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
-                    self.updateGrowingTextView(newHeight: newHeight, difference: difference)
+                        self.updateGrowingTextView(newHeight: newHeight, difference: difference)
                     }, completion: { (finished) -> Void in
-                        self.delegate?.growingTextView(self, didChangeHeight: newHeight, difference: difference)
+                        if let delegate = self.delegate where delegate.respondsToSelector(DelegateSelectors.didChangeHeight) {
+                            delegate.growingTextView!(self, didChangeHeight: newHeight, difference: difference)
+                        }
                 })
             } else {
                 updateGrowingTextView(newHeight: newHeight, difference: difference)
-                delegate?.growingTextView(self, didChangeHeight: newHeight, difference: difference)
+
+                if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didChangeHeight) {
+                    delegate.growingTextView!(self, didChangeHeight: newHeight, difference: difference)
+                }
             }
         }
 
@@ -340,10 +331,21 @@ extension GrowingTextView {
         addSubview(textView)
     }
 
+    private func updateTextViewFrame() {
+        var textViewFrame = frame
+        textViewFrame.origin.x = contentInset.left
+        textViewFrame.origin.y = contentInset.top
+        textViewFrame.size.width -= contentInset.left + contentInset.right
+        textViewFrame.size.height -= contentInset.top + contentInset.bottom
+        textView.frame = textViewFrame
+    }
+
     private func updateGrowingTextView(newHeight newHeight: CGFloat, difference: CGFloat) {
-        delegate?.growingTextView(self, willChangeHeight: newHeight, difference: difference)
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.willChangeHeight) {
+            delegate.growingTextView!(self, willChangeHeight: newHeight, difference: difference)
+        }
         frame.size.height = newHeight
-        textView.frame.size.height = frame.height
+        updateTextViewFrame()
     }
 
     private func heightForNumberOfLines(numberOfLines: Int) -> CGFloat {
@@ -383,31 +385,42 @@ extension GrowingTextView {
 // MARK: - TextView delegate
 extension GrowingTextView: UITextViewDelegate {
     public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        return delegate?.growingTextViewShouldBeginEditing(self) ?? true
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.shouldBeginEditing) {
+            return delegate.growingTextViewShouldBeginEditing!(self)
+        }
+        return true
     }
 
     public func textViewShouldEndEditing(textView: UITextView) -> Bool {
-        return delegate?.growingTextViewShouldEndEditing(self) ?? true
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.shouldEndEditing) {
+            return delegate.growingTextViewShouldEndEditing!(self)
+        }
+        return true
     }
 
     public func textViewDidBeginEditing(textView: UITextView) {
-        delegate?.growingTextViewDidBeginEditing(self)
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didBeginEditing) {
+            delegate.growingTextViewDidBeginEditing!(self)
+        }
     }
 
     public func textViewDidEndEditing(textView: UITextView) {
-        delegate?.growingTextViewDidEndEditing(self)
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didEndEditing) {
+            delegate.growingTextViewDidEndEditing!(self)
+        }
     }
 
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if !hasText && text.isEmpty {
+        if !hasText && text == "" {
             return false
         }
-        if let delegate = delegate {
-            delegate.growingTextView(self, shouldChangeTextInRange: range, replacementText: text)
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.shouldChangeText)  {
+            return delegate.growingTextView!(self, shouldChangeTextInRange: range, replacementText: text)
         }
+
         if text == "\n" {
-            if let shouldReturn = delegate?.growingTextViewShouldReturn(self) {
-                return shouldReturn
+            if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.shouldReturn) {
+                return delegate.growingTextViewShouldReturn!(self)
             } else {
                 textView.resignFirstResponder()
                 return false
@@ -418,11 +431,15 @@ extension GrowingTextView: UITextViewDelegate {
 
     public func textViewDidChange(textView: UITextView) {
         updateHeight()
-        delegate?.growingTextViewDidChange(self)
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didChange) {
+            delegate.growingTextViewDidChange!(self)
+        }
     }
 
     public func textViewDidChangeSelection(textView: UITextView) {
-        delegate?.growingTextViewDidChangeSelection(self)
+        if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didChangeSelection) {
+            delegate.growingTextViewDidChangeSelection!(self)
+        }
     }
 }
 

@@ -8,61 +8,32 @@
 
 import UIKit
 
-public protocol GrowingTextViewDelegate {
-    func growingTextViewShouldBeginEditing(growingTextView: GrowingTextView) -> Bool
-    func growingTextViewShouldEndEditing(growingTextView: GrowingTextView) -> Bool
+@objc public protocol GrowingTextViewDelegate: NSObjectProtocol {
+    optional func growingTextViewShouldBeginEditing(growingTextView: GrowingTextView) -> Bool
+    optional func growingTextViewShouldEndEditing(growingTextView: GrowingTextView) -> Bool
 
-    func growingTextViewDidBeginEditing(growingTextView: GrowingTextView)
-    func growingTextViewDidEndEditing(growingTextView: GrowingTextView)
+    optional func growingTextViewDidBeginEditing(growingTextView: GrowingTextView)
+    optional func growingTextViewDidEndEditing(growingTextView: GrowingTextView)
 
-    func growingTextView(growingTextView: GrowingTextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool
-    func growingTextViewDidChange(growingTextView: GrowingTextView)
-    func growingTextViewDidChangeSelection(growingTextView: GrowingTextView)
+    optional func growingTextView(growingTextView: GrowingTextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool
+    optional func growingTextViewDidChange(growingTextView: GrowingTextView)
+    optional func growingTextViewDidChangeSelection(growingTextView: GrowingTextView)
 
-    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat)
-    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat)
+    optional func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat)
+    optional func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat)
 
-    func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool
+    optional func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool
 }
 
-public extension GrowingTextViewDelegate {
-    func growingTextViewShouldBeginEditing(growingTextView: GrowingTextView) -> Bool {
-        return true
-    }
-
-    func growingTextViewShouldEndEditing(growingTextView: GrowingTextView) -> Bool {
-        return true
-    }
-
-    func growingTextViewDidBeginEditing(growingTextView: GrowingTextView) {
-
-    }
-
-    func growingTextViewDidEndEditing(growingTextView: GrowingTextView) {
-
-    }
-
-    func growingTextView(growingTextView: GrowingTextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        return true
-    }
-
-    func growingTextViewDidChange(growingTextView: GrowingTextView) {
-
-    }
-
-    func growingTextViewDidChangeSelection(growingTextView: GrowingTextView) {
-
-    }
-
-    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat) {
-
-    }
-
-    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {
-
-    }
-
-    func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool {
-        return true
-    }
+internal struct DelegateSelectors {
+    static let shouldBeginEditing: Selector = "growingTextViewShouldBeginEditing:"
+    static let shouldEndEditing: Selector = "growingTextViewShouldEndEditing:"
+    static let didBeginEditing: Selector = "growingTextViewDidBeginEditing:"
+    static let didEndEditing: Selector = "growingTextViewDidEndEditing:"
+    static let shouldChangeText: Selector = "growingTextView:shouldChangeTextInRange:replacementText:"
+    static let didChange: Selector = "growingTextViewDidChange:"
+    static let didChangeSelection: Selector = "growingTextViewDidChangeSelection:"
+    static let willChangeHeight: Selector = "growingTextView:willChangeHeight:difference:"
+    static let didChangeHeight: Selector = "growingTextView:didChangeHeight:difference:"
+    static let shouldReturn: Selector = "growingTextViewShouldReturn:"
 }

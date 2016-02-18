@@ -39,6 +39,7 @@ class ExampleViewController: UIViewController {
         textView.enablesReturnKeyAutomatically = true
         textView.font = UIFont.systemFontOfSize(16)
         textView.placeholder = NSAttributedString(string: "说点什么...", attributes: [NSForegroundColorAttributeName: UIColor.lightGrayColor(), NSFontAttributeName: UIFont.systemFontOfSize(16)])
+        textView.maxNumberOfLines = 3
         textView.delegate = self
     }
 
@@ -66,8 +67,8 @@ class ExampleViewController: UIViewController {
 }
 
 extension ExampleViewController: GrowingTextViewDelegate {
-    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {
-        print("Height Changed: \(height)  Diff: \(difference)")
+    func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat) {
+        print("Height Will Change To: \(height)  Diff: \(difference)")
 
         inputBarHeight.constant = height
         UIView.animateWithDuration(0.1, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
@@ -75,6 +76,10 @@ extension ExampleViewController: GrowingTextViewDelegate {
             }) { (finished) -> Void in
                 self.scrollToBottom(animated: true)
         }
+    }
+
+    func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {
+        print("Height Did Change!")
     }
 
     func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool {
