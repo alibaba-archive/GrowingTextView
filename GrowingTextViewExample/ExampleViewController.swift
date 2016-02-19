@@ -71,11 +71,13 @@ extension ExampleViewController: GrowingTextViewDelegate {
         print("Height Will Change To: \(height)  Diff: \(difference)")
 
         inputBarHeight.constant = height
-        UIView.animateWithDuration(0.1, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
-                self.view.layoutIfNeeded()
-            }) { (finished) -> Void in
-                self.scrollToBottom(animated: true)
-        }
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+//        UIView.animateWithDuration(0.1, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
+//                self.view.layoutIfNeeded()
+//            }) { (finished) -> Void in
+//                self.scrollToBottom(animated: true)
+//        }
     }
 
     func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {

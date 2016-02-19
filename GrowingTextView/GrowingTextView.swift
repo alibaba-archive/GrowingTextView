@@ -62,6 +62,14 @@ public class GrowingTextView: UIView {
             updateMinHeight()
         }
     }
+    /// A Boolean value that determines whether scrolling is enabled.
+    ///
+    /// If the value of this property is true, scrolling is enabled, and if it is false, scrolling is disabled. The default is false.
+    public var scrollEnabled = false {
+        didSet {
+            textView.scrollEnabled = scrollEnabled
+        }
+    }
     /// A Boolean value that determines whether to display a placeholder when the text is empty.
     ///
     /// The default value of this property is true.
@@ -157,17 +165,6 @@ public class GrowingTextView: UIView {
         }
         get {
             return textView.dataDetectorTypes
-        }
-    }
-    /// A Boolean value that determines whether scrolling is enabled.
-    ///
-    /// If the value of this property is true, scrolling is enabled, and if it is false, scrolling is disabled. The default is false.
-    public var scrollEnabled: Bool {
-        set {
-            textView.scrollEnabled = newValue
-        }
-        get {
-            return textView.scrollEnabled
         }
     }
     /// The visible title of the Return key.
@@ -317,6 +314,7 @@ extension GrowingTextView {
             }
         }
 
+        updateScrollPosition()
         textView.shouldDisplayPlaceholder = textView.text.characters.count == 0 && placeholderEnabled
     }
 }
@@ -324,7 +322,6 @@ extension GrowingTextView {
 // MARK: - Helper
 extension GrowingTextView {
     private func commonInit() {
-        scrollEnabled = false
         textView.frame = CGRect(origin: CGPoint.zero, size: frame.size)
         textView.delegate = self
         minNumberOfLines = 1
@@ -332,12 +329,14 @@ extension GrowingTextView {
     }
 
     private func updateTextViewFrame() {
+        let lineFragmentPadding = textView.textContainer.lineFragmentPadding
         var textViewFrame = frame
-        textViewFrame.origin.x = contentInset.left
+        textViewFrame.origin.x = contentInset.left - lineFragmentPadding
         textViewFrame.origin.y = contentInset.top
-        textViewFrame.size.width -= contentInset.left + contentInset.right
+        textViewFrame.size.width -= contentInset.left + contentInset.right - lineFragmentPadding * 2
         textViewFrame.size.height -= contentInset.top + contentInset.bottom
         textView.frame = textViewFrame
+        textView.sizeThatFits(textView.frame.size)
     }
 
     private func updateGrowingTextView(newHeight newHeight: CGFloat, difference: CGFloat) {
@@ -379,6 +378,19 @@ extension GrowingTextView {
             return
         }
         minHeight = heightForNumberOfLines(minNumberOfLines)
+    }
+
+    private func updateScrollPosition() {
+        guard let selectedTextRange = textView.selectedTextRange else {
+            return
+        }
+        let caretRect = textView.caretRectForPosition(selectedTextRange.end)
+        let caretY = max(caretRect.origin.y + caretRect.height - textView.frame.height, 0)
+
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        textView.setContentOffset(CGPoint(x: 0, y: caretY), animated: false)
+        UIView.commitAnimations()
     }
 }
 
@@ -437,6 +449,7 @@ extension GrowingTextView: UITextViewDelegate {
     }
 
     public func textViewDidChangeSelection(textView: UITextView) {
+        updateScrollPosition()
         if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didChangeSelection) {
             delegate.growingTextViewDidChangeSelection!(self)
         }
