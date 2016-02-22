@@ -278,15 +278,10 @@ extension GrowingTextView {
     }
 
     public func updateHeight() {
-        var newHeight = calculateHeight()
-        if newHeight < minHeight || !hasText {
-            newHeight = minHeight
-        }
-        if let maxHeight = maxHeight where newHeight > maxHeight {
-            newHeight = maxHeight
-        }
+        let updatedHeightInfo = updatedHeight()
+        let newHeight = updatedHeightInfo.newHeight
+        let difference = updatedHeightInfo.difference
 
-        let difference = newHeight - frame.height
         if difference != 0 {
             if newHeight == maxHeight {
                 if !textView.scrollEnabled {
@@ -314,7 +309,7 @@ extension GrowingTextView {
             }
         }
 
-        updateScrollPosition()
+        updateScrollPosition(animated: false)
         textView.shouldDisplayPlaceholder = textView.text.characters.count == 0 && placeholderEnabled
     }
 }
@@ -345,6 +340,19 @@ extension GrowingTextView {
         }
         frame.size.height = newHeight
         updateTextViewFrame()
+    }
+
+    private func updatedHeight() -> (newHeight: CGFloat, difference: CGFloat) {
+        var newHeight = calculateHeight()
+        if newHeight < minHeight || !hasText {
+            newHeight = minHeight
+        }
+        if let maxHeight = maxHeight where newHeight > maxHeight {
+            newHeight = maxHeight
+        }
+        let difference = newHeight - frame.height
+
+        return (newHeight, difference)
     }
 
     private func heightForNumberOfLines(numberOfLines: Int) -> CGFloat {
@@ -380,17 +388,21 @@ extension GrowingTextView {
         minHeight = heightForNumberOfLines(minNumberOfLines)
     }
 
-    private func updateScrollPosition() {
+    private func updateScrollPosition(animated animated: Bool) {
         guard let selectedTextRange = textView.selectedTextRange else {
             return
         }
         let caretRect = textView.caretRectForPosition(selectedTextRange.end)
         let caretY = max(caretRect.origin.y + caretRect.height - textView.frame.height, 0)
 
-        UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationBeginsFromCurrentState(true)
-        textView.setContentOffset(CGPoint(x: 0, y: caretY), animated: false)
-        UIView.commitAnimations()
+        if animated {
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationBeginsFromCurrentState(true)
+            textView.setContentOffset(CGPoint(x: 0, y: caretY), animated: false)
+            UIView.commitAnimations()
+        } else {
+            textView.setContentOffset(CGPoint(x: 0, y: caretY), animated: false)
+        }
     }
 }
 
@@ -449,7 +461,10 @@ extension GrowingTextView: UITextViewDelegate {
     }
 
     public func textViewDidChangeSelection(textView: UITextView) {
-        updateScrollPosition()
+        let willUpdateHeight = updatedHeight().difference != 0
+        if !willUpdateHeight {
+            updateScrollPosition(animated: true)
+        }
         if let delegate = delegate where delegate.respondsToSelector(DelegateSelectors.didChangeSelection) {
             delegate.growingTextViewDidChangeSelection!(self)
         }

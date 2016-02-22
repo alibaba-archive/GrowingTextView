@@ -39,7 +39,7 @@ class ExampleViewController: UIViewController {
         textView.enablesReturnKeyAutomatically = true
         textView.font = UIFont.systemFontOfSize(16)
         textView.placeholder = NSAttributedString(string: "说点什么...", attributes: [NSForegroundColorAttributeName: UIColor.lightGrayColor(), NSFontAttributeName: UIFont.systemFontOfSize(16)])
-        textView.maxNumberOfLines = 3
+        textView.maxNumberOfLines = 5
         textView.delegate = self
     }
 
@@ -73,11 +73,6 @@ extension ExampleViewController: GrowingTextViewDelegate {
         inputBarHeight.constant = height
         view.setNeedsLayout()
         view.layoutIfNeeded()
-//        UIView.animateWithDuration(0.1, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
-//                self.view.layoutIfNeeded()
-//            }) { (finished) -> Void in
-//                self.scrollToBottom(animated: true)
-//        }
     }
 
     func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat) {
