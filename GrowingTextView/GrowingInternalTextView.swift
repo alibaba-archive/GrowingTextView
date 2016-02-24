@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal class GrowingInternalTextView: UITextView {
+internal class GrowingInternalTextView: UITextView, NSCopying {
     var placeholder: NSAttributedString? {
         didSet {
             setNeedsDisplay()
@@ -45,6 +45,31 @@ internal class GrowingInternalTextView: UITextView {
         let yPosition: CGFloat = (textContainerInset.top - textContainerInset.bottom) / 2
         let rect = CGRect(origin: CGPoint(x: xPosition, y: yPosition), size: placeholderSize)
         placeholder.drawInRect(rect)
+    }
+
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        let textView = GrowingInternalTextView(frame: frame)
+        textView.scrollEnabled = scrollEnabled
+        textView.shouldDisplayPlaceholder = shouldDisplayPlaceholder
+        textView.placeholder = placeholder
+        textView.text = text
+        textView.font = font
+        textView.textColor = textColor
+        textView.textAlignment = textAlignment
+        textView.editable = editable
+        textView.selectedRange = selectedRange
+        textView.dataDetectorTypes = dataDetectorTypes
+        textView.returnKeyType = returnKeyType
+        textView.keyboardType = keyboardType
+        textView.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically
+
+        textView.textContainerInset = textContainerInset
+        textView.textContainer.lineFragmentPadding = textContainer.lineFragmentPadding
+        textView.showsHorizontalScrollIndicator = showsHorizontalScrollIndicator
+        textView.contentInset = contentInset
+        textView.contentMode = contentMode
+
+        return textView
     }
 
     private func sizeForAttributedString(attributedString: NSAttributedString) -> CGSize {

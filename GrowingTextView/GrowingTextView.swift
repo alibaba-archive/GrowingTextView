@@ -244,6 +244,7 @@ extension GrowingTextView {
         updateTextViewFrame()
         updateMaxHeight()
         updateMinHeight()
+        updateHeight()
     }
 
     public override func sizeThatFits(var size: CGSize) -> CGSize {
@@ -361,21 +362,15 @@ extension GrowingTextView {
     }
 
     private func heightForNumberOfLines(numberOfLines: Int) -> CGFloat {
-        let textTemp = textView.text
         var text = "-"
-        textView.delegate = nil
-        textView.hidden = true
         if numberOfLines > 0 {
             for _ in 1..<numberOfLines {
                 text += "\n|W|"
             }
         }
-        textView.text = text
-        let height = calculateHeight()
-        textView.text = textTemp
-        textView.hidden = false
-        textView.delegate = self
-        sizeToFit()
+        let textViewCopy: GrowingInternalTextView = textView.copy() as! GrowingInternalTextView
+        textViewCopy.text = text
+        let height = ceil(textViewCopy.sizeThatFits(textViewCopy.frame.size).height + contentInset.top + contentInset.bottom)
         return height
     }
 
