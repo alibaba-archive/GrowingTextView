@@ -12,6 +12,9 @@ public class GrowingTextView: UIView {
     // MARK: - Public properties
     public var delegate: GrowingTextViewDelegate?
 
+    public var internalTextView: UITextView {
+        return textView
+    }
     public var maxNumberOfLines: Int? {
         willSet {
             if let newValue = newValue {
@@ -239,6 +242,8 @@ extension GrowingTextView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         updateTextViewFrame()
+        updateMaxHeight()
+        updateMinHeight()
     }
 
     public override func sizeThatFits(var size: CGSize) -> CGSize {
