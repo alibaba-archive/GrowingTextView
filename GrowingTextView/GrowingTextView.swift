@@ -96,9 +96,7 @@ public class GrowingTextView: UIView {
     public var text: String? {
         set {
             textView.text = newValue
-            if newValue != text {
-                updateHeight()
-            }
+            updateHeight()
         }
         get {
             return textView.text
