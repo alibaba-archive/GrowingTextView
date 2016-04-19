@@ -26,14 +26,14 @@ import UIKit
 }
 
 internal struct DelegateSelectors {
-    static let shouldBeginEditing: Selector = "growingTextViewShouldBeginEditing:"
-    static let shouldEndEditing: Selector = "growingTextViewShouldEndEditing:"
-    static let didBeginEditing: Selector = "growingTextViewDidBeginEditing:"
-    static let didEndEditing: Selector = "growingTextViewDidEndEditing:"
-    static let shouldChangeText: Selector = "growingTextView:shouldChangeTextInRange:replacementText:"
-    static let didChange: Selector = "growingTextViewDidChange:"
-    static let didChangeSelection: Selector = "growingTextViewDidChangeSelection:"
-    static let willChangeHeight: Selector = "growingTextView:willChangeHeight:difference:"
-    static let didChangeHeight: Selector = "growingTextView:didChangeHeight:difference:"
-    static let shouldReturn: Selector = "growingTextViewShouldReturn:"
+    static let shouldBeginEditing = #selector(GrowingTextViewDelegate.growingTextViewShouldBeginEditing(_:))
+    static let shouldEndEditing = #selector(GrowingTextViewDelegate.growingTextViewShouldEndEditing(_:))
+    static let didBeginEditing = #selector(GrowingTextViewDelegate.growingTextViewDidBeginEditing(_:))
+    static let didEndEditing = #selector(GrowingTextViewDelegate.growingTextViewDidEndEditing(_:))
+    static let shouldChangeText = #selector(GrowingTextViewDelegate.growingTextView(_:shouldChangeTextInRange:replacementText:))
+    static let didChange = #selector(GrowingTextViewDelegate.growingTextViewDidChange(_:))
+    static let didChangeSelection = #selector(GrowingTextViewDelegate.growingTextViewDidChangeSelection(_:))
+    static let willChangeHeight = #selector(GrowingTextViewDelegate.growingTextView(_:willChangeHeight:difference:))
+    static let didChangeHeight = #selector(GrowingTextViewDelegate.growingTextView(_:didChangeHeight:difference:))
+    static let shouldReturn = #selector(GrowingTextViewDelegate.growingTextViewShouldReturn(_:))
 }

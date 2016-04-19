@@ -245,7 +245,8 @@ extension GrowingTextView {
         updateHeight()
     }
 
-    public override func sizeThatFits(var size: CGSize) -> CGSize {
+    public override func sizeThatFits(size: CGSize) -> CGSize {
+        var size = size
         if text?.characters.count == 0 {
             size.height = minHeight
         }
