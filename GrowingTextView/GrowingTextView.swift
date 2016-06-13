@@ -394,6 +394,12 @@ extension GrowingTextView {
         let caretRect = textView.caretRectForPosition(selectedTextRange.end)
         let caretY = max(caretRect.origin.y + caretRect.height - textView.frame.height, 0)
 
+        // Continuous multiple "\r\n" get an infinity caret rect, set it as the content offset will result in crash.
+        guard caretY != CGFloat.infinity && caretY != CGFloat.max else {
+            print("Invalid caretY: \(caretY)")
+            return
+        }
+
         if animated {
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationBeginsFromCurrentState(true)
