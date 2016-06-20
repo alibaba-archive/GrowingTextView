@@ -10,7 +10,7 @@ import UIKit
 
 public class GrowingTextView: UIView {
     // MARK: - Public properties
-    public var delegate: GrowingTextViewDelegate?
+    public weak var delegate: GrowingTextViewDelegate?
 
     public var internalTextView: UITextView {
         return textView
