@@ -9,20 +9,20 @@
 import UIKit
 
 @objc public protocol GrowingTextViewDelegate: NSObjectProtocol {
-    optional func growingTextViewShouldBeginEditing(growingTextView: GrowingTextView) -> Bool
-    optional func growingTextViewShouldEndEditing(growingTextView: GrowingTextView) -> Bool
+    @objc optional func growingTextViewShouldBeginEditing(_ growingTextView: GrowingTextView) -> Bool
+    @objc optional func growingTextViewShouldEndEditing(_ growingTextView: GrowingTextView) -> Bool
 
-    optional func growingTextViewDidBeginEditing(growingTextView: GrowingTextView)
-    optional func growingTextViewDidEndEditing(growingTextView: GrowingTextView)
+    @objc optional func growingTextViewDidBeginEditing(_ growingTextView: GrowingTextView)
+    @objc optional func growingTextViewDidEndEditing(_ growingTextView: GrowingTextView)
 
-    optional func growingTextView(growingTextView: GrowingTextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool
-    optional func growingTextViewDidChange(growingTextView: GrowingTextView)
-    optional func growingTextViewDidChangeSelection(growingTextView: GrowingTextView)
+    @objc optional func growingTextView(_ growingTextView: GrowingTextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool
+    @objc optional func growingTextViewDidChange(_ growingTextView: GrowingTextView)
+    @objc optional func growingTextViewDidChangeSelection(_ growingTextView: GrowingTextView)
 
-    optional func growingTextView(growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat)
-    optional func growingTextView(growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat)
+    @objc optional func growingTextView(_ growingTextView: GrowingTextView, willChangeHeight height: CGFloat, difference: CGFloat)
+    @objc optional func growingTextView(_ growingTextView: GrowingTextView, didChangeHeight height: CGFloat, difference: CGFloat)
 
-    optional func growingTextViewShouldReturn(growingTextView: GrowingTextView) -> Bool
+    @objc optional func growingTextViewShouldReturn(_ growingTextView: GrowingTextView) -> Bool
 }
 
 internal struct DelegateSelectors {

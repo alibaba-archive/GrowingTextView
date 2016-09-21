@@ -9,7 +9,7 @@
 import UIKit
 
 let kRightMessageCellID = "RightMessageCell"
-private let leftPadding: CGFloat = UIScreen.mainScreen().bounds.width / 4
+private let leftPadding: CGFloat = UIScreen.main.bounds.width / 4
 private let rightPadding: CGFloat = 20
 
 class RightMessageCell: UITableViewCell {
@@ -22,21 +22,21 @@ class RightMessageCell: UITableViewCell {
         contentLabel.layer.cornerRadius = 6
     }
 
-    class func rowHeightForMessage(message: String) -> CGFloat {
-        return contentLabelFrame(message).height + 15
+    class func rowHeight(for message: String) -> CGFloat {
+        return contentLabelFrame(for: message).height + 15
     }
 
-    class func leadingSpaceForMessage(message: String) -> CGFloat {
-        return UIScreen.mainScreen().bounds.width - rightPadding - contentLabelFrame(message).width
+    class func leadingSpace(for message: String) -> CGFloat {
+        return UIScreen.main.bounds.width - rightPadding - contentLabelFrame(for: message).width
     }
 
-    private class func contentLabelFrame(message: String) -> CGRect {
+    fileprivate class func contentLabelFrame(for message: String) -> CGRect {
         guard message.characters.count > 0 else {
             return CGRect.zero
         }
         let messageString = message as NSString
-        let size = CGSize(width: UIScreen.mainScreen().bounds.width - leftPadding - rightPadding, height: CGFloat.max)
-        let frame = messageString.boundingRectWithSize(size, options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(16)], context: nil)
+        let size = CGSize(width: UIScreen.main.bounds.width - leftPadding - rightPadding, height: CGFloat.greatestFiniteMagnitude)
+        let frame = messageString.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
         return CGRect(x: ceil(frame.origin.x), y: ceil(frame.origin.y), width: ceil(frame.width) + kMessageLabelPadding * 2.0, height: ceil(frame.height))
     }
 }

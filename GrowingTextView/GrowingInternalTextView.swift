@@ -22,41 +22,41 @@ internal class GrowingInternalTextView: UITextView, NSCopying {
         }
     }
 
-    private var scrollEnabledTemp = false
+    fileprivate var isScrollEnabledTemp = false
 
     override var text: String! {
         willSet {
             // If one of GrowingTextView's superviews is a scrollView, and self.scrollEnabled is false, setting the text programatically will cause UIKit to search upwards until it finds a scrollView with scrollEnabled true, then scroll it erratically. Setting scrollEnabled temporarily to true prevents this.
-            scrollEnabledTemp = scrollEnabled
-            scrollEnabled = true
+            isScrollEnabledTemp = isScrollEnabled
+            isScrollEnabled = true
         }
         didSet {
-            scrollEnabled = scrollEnabledTemp
+            isScrollEnabled = isScrollEnabledTemp
         }
     }
 
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
-        guard let placeholder = placeholder where shouldDisplayPlaceholder else {
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        guard let placeholder = placeholder, shouldDisplayPlaceholder else {
             return
         }
         let placeholderSize = sizeForAttributedString(placeholder)
         let xPosition: CGFloat = textContainer.lineFragmentPadding + textContainerInset.left
         let yPosition: CGFloat = (textContainerInset.top - textContainerInset.bottom) / 2
         let rect = CGRect(origin: CGPoint(x: xPosition, y: yPosition), size: placeholderSize)
-        placeholder.drawInRect(rect)
+        placeholder.draw(in: rect)
     }
 
-    func copyWithZone(zone: NSZone) -> AnyObject {
+    func copy(with zone: NSZone?) -> Any {
         let textView = GrowingInternalTextView(frame: frame)
-        textView.scrollEnabled = scrollEnabled
+        textView.isScrollEnabled = isScrollEnabled
         textView.shouldDisplayPlaceholder = shouldDisplayPlaceholder
         textView.placeholder = placeholder
         textView.text = text
         textView.font = font
         textView.textColor = textColor
         textView.textAlignment = textAlignment
-        textView.editable = editable
+        textView.isEditable = isEditable
         textView.selectedRange = selectedRange
         textView.dataDetectorTypes = dataDetectorTypes
         textView.returnKeyType = returnKeyType
@@ -72,8 +72,8 @@ internal class GrowingInternalTextView: UITextView, NSCopying {
         return textView
     }
 
-    private func sizeForAttributedString(attributedString: NSAttributedString) -> CGSize {
+    fileprivate func sizeForAttributedString(_ attributedString: NSAttributedString) -> CGSize {
         let size = attributedString.size()
-        return CGRectIntegral(CGRect(origin: CGPointZero, size: size)).size
+        return CGRect(origin: CGPoint.zero, size: size).integral.size
     }
 }
