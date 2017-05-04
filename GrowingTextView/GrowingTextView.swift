@@ -90,6 +90,14 @@ open class GrowingTextView: UIView {
             return textView.placeholder
         }
     }
+    /// A Boolean value that determines whether to display the caret.
+    ///
+    /// The default value of this property is false.
+    open var isCaretHidden = false {
+        didSet {
+            textView.isCaretHidden = isCaretHidden
+        }
+    }
 
     // MARK: - UITextView properties
     /// The text displayed by the text view.
@@ -300,7 +308,7 @@ extension GrowingTextView {
             if isGrowingAnimationEnabled {
                 UIView.animate(withDuration: animationDuration, delay: 0, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
                     self.updateGrowingTextView(newHeight: newHeight, difference: difference)
-                    }, completion: { (finished) in
+                    }, completion: { (_) in
                         if let delegate = self.delegate, delegate.responds(to: DelegateSelectors.didChangeHeight) {
                             delegate.growingTextView!(self, didChangeHeight: newHeight, difference: difference)
                         }
@@ -443,7 +451,7 @@ extension GrowingTextView: UITextViewDelegate {
         if !hasText && text == "" {
             return false
         }
-        if let delegate = delegate, delegate.responds(to: DelegateSelectors.shouldChangeText)  {
+        if let delegate = delegate, delegate.responds(to: DelegateSelectors.shouldChangeText) {
             return delegate.growingTextView!(self, shouldChangeTextInRange: range, replacementText: text)
         }
 

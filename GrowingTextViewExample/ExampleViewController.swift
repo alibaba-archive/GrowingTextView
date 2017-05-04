@@ -103,7 +103,7 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let _ = textView.resignFirstResponder()
+        _ = textView.resignFirstResponder()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -156,4 +156,3 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.reloadData()
     }
 }
-

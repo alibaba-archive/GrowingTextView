@@ -21,6 +21,7 @@ internal class GrowingInternalTextView: UITextView, NSCopying {
             }
         }
     }
+    var isCaretHidden = false
 
     fileprivate var isScrollEnabledTemp = false
 
@@ -47,10 +48,18 @@ internal class GrowingInternalTextView: UITextView, NSCopying {
         placeholder.draw(in: rect)
     }
 
+    override func caretRect(for position: UITextPosition) -> CGRect {
+        if isCaretHidden {
+            return .zero
+        }
+        return super.caretRect(for: position)
+    }
+
     func copy(with zone: NSZone?) -> Any {
         let textView = GrowingInternalTextView(frame: frame)
         textView.isScrollEnabled = isScrollEnabled
         textView.shouldDisplayPlaceholder = shouldDisplayPlaceholder
+        textView.isCaretHidden = isCaretHidden
         textView.placeholder = placeholder
         textView.text = text
         textView.font = font
