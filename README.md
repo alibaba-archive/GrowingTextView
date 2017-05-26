@@ -1,18 +1,18 @@
-#GrowingTextView
+# GrowingTextView
 GrowingTextView is a text view which grows with the text changes and starts scrolling when the content reaches a specified number of lines.
 
 ![Example](Gif/GrowingTextViewExample.gif "GrowingTextViewExample")
 
 
-##How To Get Started
-###Carthage
+## How To Get Started
+### Carthage
 Specify "GrowingTextView" in your ```Cartfile```:
 ```ogdl 
 github "teambition/GrowingTextView"
 ```
 
-###Usage
-#####  Configuration
+### Usage
+####  Configuration
 ```swift
 textView.maxNumberOfLines = ...
 textView.minNumberOfLines = ...
@@ -39,7 +39,7 @@ textView.enablesReturnKeyAutomatically = ...
 textView.delegate = self
 ```
 
-#####  Implement delegate
+####  Implement delegate
 ```swift
 optional func growingTextViewShouldBeginEditing(_ growingTextView: GrowingTextView) -> Bool
 
