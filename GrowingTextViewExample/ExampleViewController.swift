@@ -38,7 +38,7 @@ class ExampleViewController: UIViewController {
         textView.returnKeyType = .send
         textView.enablesReturnKeyAutomatically = true
         textView.font = UIFont.systemFont(ofSize: 16)
-        textView.placeholder = NSAttributedString(string: "说点什么...", attributes: [NSForegroundColorAttributeName: UIColor.lightGray, NSFontAttributeName: UIFont.systemFont(ofSize: 16)])
+        textView.placeholder = NSAttributedString(string: "说点什么...", attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 16)])
         textView.maxNumberOfLines = 5
         textView.delegate = self
     }
@@ -50,7 +50,7 @@ class ExampleViewController: UIViewController {
         tableView.scrollToRow(at: IndexPath(row: 0, section: messages.count - 1), at: .bottom, animated: animated)
     }
 
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             inputBarBottomSpace.constant = keyboardFrame.height
             view.setNeedsLayout()
@@ -59,7 +59,7 @@ class ExampleViewController: UIViewController {
         }
     }
 
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         inputBarBottomSpace.constant = 0
         view.setNeedsLayout()
         view.layoutIfNeeded()

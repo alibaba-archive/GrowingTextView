@@ -36,7 +36,7 @@ class RightMessageCell: UITableViewCell {
         }
         let messageString = message as NSString
         let size = CGSize(width: UIScreen.main.bounds.width - leftPadding - rightPadding, height: CGFloat.greatestFiniteMagnitude)
-        let frame = messageString.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+        let frame = messageString.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [.font: UIFont.systemFont(ofSize: 16)], context: nil)
         return CGRect(x: ceil(frame.origin.x), y: ceil(frame.origin.y), width: ceil(frame.width) + kMessageLabelPadding * 2.0, height: ceil(frame.height))
     }
 }
