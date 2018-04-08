@@ -80,7 +80,7 @@ extension ExampleViewController: GrowingTextViewDelegate {
     }
 
     func growingTextViewShouldReturn(_ growingTextView: GrowingTextView) -> Bool {
-        guard let text = growingTextView.text, text.characters.count > 0 else {
+        guard let text = growingTextView.text, !text.isEmpty else {
             return false
         }
         messages.append(text)

@@ -31,8 +31,8 @@ class RightMessageCell: UITableViewCell {
     }
 
     fileprivate class func contentLabelFrame(for message: String) -> CGRect {
-        guard message.characters.count > 0 else {
-            return CGRect.zero
+        guard !message.isEmpty else {
+            return .zero
         }
         let messageString = message as NSString
         let size = CGSize(width: UIScreen.main.bounds.width - leftPadding - rightPadding, height: CGFloat.greatestFiniteMagnitude)

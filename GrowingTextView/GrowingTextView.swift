@@ -78,7 +78,7 @@ open class GrowingTextView: UIView {
     /// The default value of this property is true.
     open var isPlaceholderEnabled = true {
         didSet {
-            textView.shouldDisplayPlaceholder = textView.text.characters.count == 0 && isPlaceholderEnabled
+            textView.shouldDisplayPlaceholder = textView.text.isEmpty && isPlaceholderEnabled
         }
     }
     /// An attributed string that displays when there is no other text in the text view.
@@ -216,7 +216,7 @@ open class GrowingTextView: UIView {
 
     // MARK: - Private properties
     fileprivate var textView: GrowingInternalTextView = {
-        let textView = GrowingInternalTextView(frame: CGRect.zero)
+        let textView = GrowingInternalTextView(frame: .zero)
         textView.textContainerInset = UIEdgeInsets.zero
         textView.textContainer.lineFragmentPadding = 1 // 1 pixel for caret
         textView.showsHorizontalScrollIndicator = false
@@ -255,7 +255,7 @@ extension GrowingTextView {
 
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
         var size = size
-        if text?.characters.count == 0 {
+        if text?.count == 0 {
             size.height = minHeight
         }
         return size
@@ -323,7 +323,7 @@ extension GrowingTextView {
         }
 
         updateScrollPosition(animated: false)
-        textView.shouldDisplayPlaceholder = textView.text.characters.count == 0 && isPlaceholderEnabled
+        textView.shouldDisplayPlaceholder = textView.text.isEmpty && isPlaceholderEnabled
     }
 }
 
