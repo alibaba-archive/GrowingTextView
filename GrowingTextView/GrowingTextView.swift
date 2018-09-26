@@ -217,10 +217,10 @@ open class GrowingTextView: UIView {
     // MARK: - Private properties
     fileprivate var textView: GrowingInternalTextView = {
         let textView = GrowingInternalTextView(frame: .zero)
-        textView.textContainerInset = UIEdgeInsets.zero
+        textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 1 // 1 pixel for caret
         textView.showsHorizontalScrollIndicator = false
-        textView.contentInset = UIEdgeInsets.zero
+        textView.contentInset = .zero
         textView.contentMode = .redraw
         return textView
     }()
@@ -330,7 +330,7 @@ extension GrowingTextView {
 // MARK: - Helper
 extension GrowingTextView {
     fileprivate func commonInit() {
-        textView.frame = CGRect(origin: CGPoint.zero, size: frame.size)
+        textView.frame = CGRect(origin: .zero, size: frame.size)
         textView.delegate = self
         minNumberOfLines = 1
         addSubview(textView)

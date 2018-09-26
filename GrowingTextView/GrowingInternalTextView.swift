@@ -83,6 +83,6 @@ internal class GrowingInternalTextView: UITextView, NSCopying {
 
     fileprivate func sizeForAttributedString(_ attributedString: NSAttributedString) -> CGSize {
         let size = attributedString.size()
-        return CGRect(origin: CGPoint.zero, size: size).integral.size
+        return CGRect(origin: .zero, size: size).integral.size
     }
 }

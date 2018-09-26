@@ -12,6 +12,6 @@ let kMessageLabelPadding: CGFloat = 10
 
 class MessageLabel: UILabel {
     override func draw(_ rect: CGRect) {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, UIEdgeInsets(top: 0, left: kMessageLabelPadding, bottom: 0, right: kMessageLabelPadding)))
+        super.drawText(in: rect.inset(by: UIEdgeInsets(top: 0, left: kMessageLabelPadding, bottom: 0, right: kMessageLabelPadding)))
     }
 }

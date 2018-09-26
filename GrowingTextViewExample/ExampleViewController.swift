@@ -30,14 +30,14 @@ class ExampleViewController: UIViewController {
         configureGrowingTextView()
         navigationItem.title = "GrowingTextView"
         automaticallyAdjustsScrollViewInsets = false
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     fileprivate func configureGrowingTextView() {
         textView.returnKeyType = .send
         textView.enablesReturnKeyAutomatically = true
-        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.font = .systemFont(ofSize: 16)
         textView.placeholder = NSAttributedString(string: "说点什么...", attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 16)])
         textView.maxNumberOfLines = 5
         textView.delegate = self
@@ -51,7 +51,7 @@ class ExampleViewController: UIViewController {
     }
 
     @objc func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             inputBarBottomSpace.constant = keyboardFrame.height
             view.setNeedsLayout()
             view.layoutIfNeeded()
