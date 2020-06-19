@@ -10,6 +10,31 @@ Specify "GrowingTextView" in your ```Cartfile```:
 ```ogdl 
 github "teambition/GrowingTextView"
 ```
+### CocoaPods (version equal or above 0.1.4)
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+To integrate features into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'TBGrowingTextView', '~> 0.1.4'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+
 
 ### Usage
 ####  Configuration
